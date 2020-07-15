@@ -17,7 +17,7 @@ TWILIO_MESSAGE_LENGTH = 153
 NUMBER_OF_CHARS = 150 * 4
 NUMBER_OF_CHARS_LIST = 450
 
-GREETINGS = ['wiki', 'wikipedia', 'hi', 'hi!', 'hello', 'hello!', 'hey', 'u up?', 'start']
+GREETINGS = ['wiki', 'wikipedia', 'yo,' 'hi', 'hi!', 'hello', 'hello!', 'hey', 'u up?', 'start']
 
 NAV_DESCRIPTIONS = 	{
 	"wiki" : "Type 'wiki ____' to search Wikipedia, e.g. 'wiki barack obama'.",
