@@ -352,32 +352,9 @@ def sms_reply():
 			if state != 'reading':
 				options = ['random', 'wiki']
 
-
-	'''if state == 'init':
-		text = ''
-		position = 0
-		options = ['random', 'wiki']
-		more_text = False
-		sections = []
-		curr_section = -1'''
-
 	print("position: " + str(position))
 
 	# update session
-	session['counter'] = counter
-	session['query'] = query
-	session['text'] = text
-	session['position'] = position
-	session['state'] = state
-	session['options'] = options
-	session['more_text'] = more_text
-	session['sections'] = sections
-	session['curr_section'] = curr_section
-	session['more_in_list'] = more_in_list
-
-	print(session.get('state'))
-	print(session.get('position'))
-
 	if options == ['']:
 		options = ['random', 'wiki']
 
@@ -394,6 +371,20 @@ def sms_reply():
 			navigation += NAV_DESCRIPTIONS[keyword] + '\n\n'
 
 	send_message(navigation, number) # resp.message() is noticeably slower than using send_message() and returning 204: No Content
+	session['counter'] = counter
+	session['query'] = query
+	session['text'] = text
+	session['position'] = position
+	session['state'] = state
+	session['options'] = options
+	session['more_text'] = more_text
+	session['sections'] = sections
+	session['curr_section'] = curr_section
+	session['more_in_list'] = more_in_list
+
+	#print(session.get('state'))
+	#print(session.get('position'))
+
 	return ('', 204)
 
 @app.route("/error", methods=['GET', 'POST'])
