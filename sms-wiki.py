@@ -75,13 +75,12 @@ def sms_reply():
 	print("state before: ", state)
 
 	incoming_msg = request.values.get('Body', None).lower()
-	resp = MessagingResponse()
 
 	if incoming_msg == 'reset':
 		print("clearing session")
 		session.clear()
 		print(session)
-		return " "
+		return ('', 204)
 
 	if counter == 1 or incoming_msg in GREETINGS:
 		send_message("Hello! I'm WikiBot.", number)
@@ -384,8 +383,8 @@ def sms_reply():
 
 	#print(session.get('state'))
 	#print(session.get('position'))
-
-	return ('', 204)
+	resp = MessagingResponse()
+	return (str(resp), 200)
 
 @app.route("/error", methods=['GET', 'POST'])
 def sms_reply_error():
