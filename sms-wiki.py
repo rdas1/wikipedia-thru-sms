@@ -11,7 +11,9 @@ app.config.from_object(__name__)
 
 account_sid = os.environ['TWILIO_ACCOUNT_SID']
 auth_token = os.environ['TWILIO_AUTH_TOKEN']
-client = Client(account_sid, auth_token)
+subaccount_sid = os.environ['TWILIO_SUBACCOUNT_SID']
+master_client = Client(account_sid, auth_token)
+client = Client(account_sid, auth_token, subaccount_sid)
 
 TWILIO_MESSAGE_LENGTH = 153
 NUMBER_OF_CHARS = 150 * 4
@@ -32,7 +34,6 @@ NAV_DESCRIPTIONS = 	{
 }
 
 responded = False
-
 
 @app.route("/", methods=['GET', 'POST'])
 def hello_world():
@@ -392,14 +393,29 @@ def sms_reply():
 		else:
 			navigation += NAV_DESCRIPTIONS[keyword] + '\n\n'
 
-	resp.message(navigation)
-	return str(resp)
+	send_message(navigation, number) # resp.message() is noticeably slower than using send_message() and returning 204: No Content
+	return ('', 204)
 
 @app.route("/error", methods=['GET', 'POST'])
 def sms_reply_error():
     resp = MessagingResponse()
     resp.message("Sorry, I'm having some issues on my end; I promise to fix them as soon as I can!")
     return str(resp)
+
+@app.route("/suspend", methods=['GET', 'POST'])
+def suspend_account():
+	resp = MessagingResponse()
+	resp.message("Suspending myself for now -- I'm sending too many messages. Sorry :/")
+	account = master_client.api.accounts(subaccount_sid).update(status='suspended')
+	return str(resp)
+
+@app.route("/fixed_loop", methods=['GET', 'POST'])
+def reactivate_account():
+	resp = MessagingResponse()
+	resp.message("Fixed the problem -- WikiBot is now reactivated and at your service!")
+	account = master_client.api.accounts(subaccount_sid).update(status='active')
+	return str(resp)
+
 
 ''' helpers: '''
 
