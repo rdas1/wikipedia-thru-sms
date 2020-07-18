@@ -5,7 +5,7 @@ from twilio.rest import Client
 
 import sys
 
-SECRET_KEY = 'a secret key'
+SECRET_KEY = os.environ['SECRET_KEY']
 app = Flask(__name__)
 app.config.from_object(__name__)
 
