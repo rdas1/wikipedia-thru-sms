@@ -19,7 +19,7 @@ TWILIO_MESSAGE_LENGTH = 153
 NUMBER_OF_CHARS = 150 * 4
 NUMBER_OF_CHARS_LIST = 450
 
-GREETINGS = ['wiki', 'wikipedia', 'yo,' 'hi', 'hi!', 'hello', 'hello!', 'hey', 'u up?', 'start']
+GREETINGS = ['wiki', 'wikipedia', 'yo', 'yo!', 'hi', 'hi!', 'hello', 'hello!', 'hey', 'u up?', 'start']
 
 NAV_DESCRIPTIONS = 	{
 	"wiki" : "Type 'wiki ____' to search Wikipedia, e.g. 'wiki barack obama'.",
@@ -82,7 +82,7 @@ def sms_reply():
 		print(session)
 		return ('', 204)
 
-	if counter == 1 or incoming_msg in GREETINGS:
+	elif counter == 1 or incoming_msg in GREETINGS:
 		send_message("Hello! I'm WikiBot.", number)
 		print("Responded: " + str(responded))
 		options = ['random', 'wiki']
@@ -282,42 +282,7 @@ def sms_reply():
 			send_message("There is no section " + incoming_msg, number)
 			options = ['sections', 'section number', 'random', 'wiki']				
 	
-	'''
-	else: # try searching for term
-		print("in else")
-		try:
-			send_message("Loading article '" + incoming_msg + "' ...", number)
-			page = wikipedia.page(incoming_msg)
-			# reset session vars
-			query = page.title
-			#send_image(query, number)
-			text = page.summary
-			position = 0
-			#state = 'reading'
-			sections = page.sections
-			curr_section = 0
-
-			(text, query, position, state,  more_text, options, sections, curr_section, number) = sendWikiText(text, query, position, state,  more_text, options, sections, curr_section, number)
-		except wikipedia.exceptions.DisambiguationError as e:
-
-			state = 'disambiguation'
-			msg = "Did you mean:\n"		
-			numOptionsPresented = min(10,len(e.options))
-
-			for i in range(0, numOptionsPresented):
-				msg += str(i+1) + ". " + e.options[i] + "\n"
-
-			sections = e.options[:numOptionsPresented]
-
-			msg += "\nType the number, and I'll find the article."
-			send_message(msg, number)
-
-		except wikipedia.exceptions.PageError:
-			send_message("'{}' doesn't match any pages. Try another query!".format(query), number)
-			options = ['random', 'wiki']
-	'''
-	if not responded:
-
+	if not responded and incoming_msg not in GREETINGS:
 		try:
 			send_message("Loading article '" + incoming_msg + "' ...", number)
 			page = wikipedia.page(incoming_msg)
