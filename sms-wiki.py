@@ -472,4 +472,4 @@ def format_section_list(sections):
 	return formatted
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
