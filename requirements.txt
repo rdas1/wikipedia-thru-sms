@@ -15,5 +15,5 @@ six==1.15.0
 soupsieve==2.0.1
 twilio==6.43.0
 urllib3==1.25.9
-Werkzeug==1.0.1
+Werkzeug==2.2.3
 -e git+git://github.com/lucas-tulio/Wikipedia.git#egg=wikipedia
